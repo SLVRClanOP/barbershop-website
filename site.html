@@ -1,0 +1,2539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbershop Sam Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css ">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            color: #333;
+            padding-top: 80px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* Header Styles */
+        header {
+            background: rgba(25, 25, 35, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fdbb2d;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo i {
+            font-size: 2rem;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        nav a {
+            text-decoration: none;
+            color: #f0f0f0;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        nav a:hover {
+            background: rgba(253, 187, 45, 0.2);
+            color: #fdbb2d;
+        }
+        nav a i {
+            font-size: 1.1rem;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .user-name {
+            font-weight: bold;
+            color: #fdbb2d;
+            font-size: 1.1rem;
+        }
+        .logout-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .logout-btn:hover {
+            background: #ff5252;
+        }
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0 2rem;
+            color: white;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            margin: 20px 0;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cta-button {
+            background: linear-gradient(45deg, #fdbb2d, #ff8e8e);
+            color: #1a1a2e;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(253, 187, 45, 0.5);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(253, 187, 45, 0.7);
+        }
+        /* Main Content */
+        .main-content {
+            background: rgba(255, 255, 255, 0.92);
+            min-height: 100vh;
+            padding: 2rem 0;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 40px;
+        }
+        .section {
+            display: none;
+            padding: 2rem 0;
+        }
+        .section.active {
+            display: block;
+        }
+        .section h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1a2a6c;
+            font-size: 2.5rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        .section h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: #fdbb2d;
+            border-radius: 2px;
+        }
+        /* Form Styles */
+        .login-form, .booking-form, .schedule-form, .services-form, .team-form {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #e0e0e0;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+        .required {
+            color: #ff6b6b;
+        }
+        /* Team Grid */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .team-member {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            border-top: 4px solid #fdbb2d;
+            position: relative;
+        }
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .team-member img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #1a2a6c, #fdbb2d);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+            border: 3px solid #fdbb2d;
+        }
+        .edit-team-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #1a2a6c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Appointments List */
+        .appointments-list {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .appointment-item {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        .appointment-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .appointment-info h4 {
+            margin-bottom: 0.5rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .appointment-info p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .appointment-info .price {
+            font-weight: bold;
+            color: #1a2a6c;
+            font-size: 1.1rem;
+            background: rgba(253, 187, 45, 0.2);
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-top: 5px;
+        }
+        .appointment-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-direction: column;
+        }
+        .cancel-btn, .confirm-btn, .add-break-btn, .remove-break-btn, .delete-service-btn, .delete-team-btn {
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .cancel-btn, .remove-break-btn, .delete-service-btn, .delete-team-btn {
+            background: #ff6b6b;
+            color: white;
+        }
+        .cancel-btn:hover, .remove-break-btn:hover, .delete-service-btn:hover, .delete-team-btn:hover {
+            background: #ff5252;
+        }
+        .confirm-btn, .add-break-btn, .add-service-btn, .add-team-btn {
+            background: #4caf50;
+            color: white;
+        }
+        .confirm-btn:hover, .add-break-btn:hover, .add-service-btn:hover, .add-team-btn:hover {
+            background: #45a049;
+        }
+        /* Dashboard Stats */
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: linear-gradient(45deg, #1a2a6c, #b21f1f);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        /* Day Groups */
+        .day-group {
+            margin-bottom: 2rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 4px solid #fdbb2d;
+        }
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .day-title {
+            font-size: 1.4rem;
+            color: #1a2a6c;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .add-appointment-btn {
+            background: #1a2a6c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .add-appointment-btn:hover {
+            background: #fdbb2d;
+            transform: rotate(90deg);
+            color: #1a1a2e;
+        }
+        .appointment-time-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem;
+            background: white;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            border-left: 3px solid #1a2a6c;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .time-display {
+            font-weight: 600;
+            min-width: 80px;
+            background: rgba(26, 42, 108, 0.1);
+            padding: 5px 10px;
+            border-radius: 20px;
+            text-align: center;
+        }
+        .customer-name {
+            flex-grow: 1;
+            font-weight: 500;
+        }
+        .appointment-price {
+            font-weight: bold;
+            color: #1a2a6c;
+            min-width: 70px;
+            text-align: right;
+        }
+        .appointment-actions-mini {
+            display: flex;
+            gap: 0.5rem;
+            margin-left: 10px;
+        }
+        .action-btn {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .complete-btn {
+            background: #4caf50;
+            color: white;
+        }
+        .cancel-btn-mini {
+            background: #ff6b6b;
+            color: white;
+        }
+        /* Schedule Container */
+        .schedule-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .schedule-day-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+            border-top: 4px solid #fdbb2d;
+        }
+        .schedule-day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .schedule-day-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1a2a6c;
+        }
+        .add-appointment-btn-small {
+            background: #1a2a6c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .add-appointment-btn-small:hover {
+            background: #fdbb2d;
+            transform: rotate(90deg);
+            color: #1a1a2e;
+        }
+        .appointment-list-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+        .appointment-time {
+            font-weight: 500;
+            min-width: 70px;
+        }
+        .appointment-customer {
+            flex-grow: 1;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s;
+        }
+        .close-modal:hover {
+            color: #ff6b6b;
+        }
+        /* Services Section */
+        .services-list {
+            margin-top: 1.5rem;
+        }
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 3px solid #1a2a6c;
+        }
+        .service-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .service-name {
+            font-weight: bold;
+            color: #1a2a6c;
+        }
+        .service-price {
+            color: #b21f1f;
+            font-weight: 500;
+        }
+        /* Recurring Options */
+        .recurring-options {
+            background: rgba(26, 42, 108, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 3px solid #1a2a6c;
+        }
+        .recurring-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+        .recurring-content {
+            margin-top: 1rem;
+            display: none;
+        }
+        .recurring-options.expanded .recurring-content {
+            display: block;
+        }
+        /* Team Settings */
+        .team-settings-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .settings-column {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        /* Time Slots */
+        .time-slots {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .time-slot {
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 90px;
+            font-weight: 500;
+        }
+        .time-slot:hover {
+            border-color: #667eea;
+            background: #f0f3ff;
+        }
+        .time-slot.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        .time-slot.unavailable {
+            background: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+        }
+        /* Location Select */
+        .location-select {
+            background: rgba(26, 42, 108, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 3px solid #1a2a6c;
+        }
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .team-settings-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .appointment-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .appointment-actions {
+                flex-direction: row;
+                width: 100%;
+                justify-content: flex-end;
+            }
+            .days-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .schedule-container {
+                grid-template-columns: 1fr;
+            }
+            .appointment-time-item {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .time-display, .appointment-price {
+                min-width: auto;
+            }
+        }
+        /* Added classes */
+        .hidden {
+            display: none !important;
+        }
+        .success-message, .error-message {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            display: none;
+        }
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .appointment-status {
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .status-confirmed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-cut"></i>
+                    Barbershop Sam
+                </div>
+                <nav id="customerNav">
+                    <ul>
+                        <li><a href="#" onclick="showSection('home')"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="#" onclick="showSection('booking')"><i class="fas fa-calendar-check"></i> Book Appointment</a></li>
+                        <li><a href="#" onclick="showSection('team')"><i class="fas fa-users"></i> Our Team</a></li>
+                        <li><a href="#" onclick="showSection('customer-appointments')"><i class="fas fa-list"></i> My Appointments</a></li>
+                        <li><a href="#" onclick="showSection('team-login')"><i class="fas fa-sign-in-alt"></i> Team Login</a></li>
+                    </ul>
+                </nav>
+                <nav id="teamNav" class="hidden">
+                    <ul>
+                        <li><a href="#" onclick="showSection('team-dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                        <li><a href="#" onclick="showSection('team-appointments')"><i class="fas fa-calendar-day"></i> Appointments</a></li>
+                        <li><a href="#" onclick="showSection('services-settings')"><i class="fas fa-concierge-bell"></i> Services</a></li>
+                        <li><a href="#" onclick="showSection('team-settings')"><i class="fas fa-cog"></i> Team Settings</a></li>
+                    </ul>
+                </nav>
+                <div class="user-info hidden" id="userInfo">
+                    <span class="user-name" id="userName"></span>
+                    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="hero" id="heroSection">
+        <div class="container">
+            <h1>Premium Barber Experience</h1>
+            <p>Book appointments with our expert barbers for a premium grooming experience. We offer the best cuts, trims, and styles in town.</p>
+            <button class="cta-button" onclick="showSection('booking')">
+                <i class="fas fa-calendar-plus"></i> Book Appointment Now
+            </button>
+        </div>
+    </section>
+    <div class="main-content">
+        <div class="container">
+            <!-- Home Section -->
+            <section id="home" class="section active">
+                <h2>Welcome to Barbershop Sam</h2>
+                <p style="text-align: center; max-width: 700px; margin: 0 auto 2rem; font-size: 1.1rem; line-height: 1.6; color: #555;">
+                    Our professional barbershop offers top-quality grooming services with a focus on precision and style.
+                    Book your appointment online and experience the difference of a premium barber service.
+                </p>
+                <div style="display: flex; justify-content: center; margin-top: 2rem;">
+                    <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800" alt="Barbershop Interior" style="max-width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                </div>
+            </section>
+            <!-- Team Login Section -->
+            <section id="team-login" class="section">
+                <h2>Team Member Login</h2>
+                <div class="login-form">
+                    <div class="error-message" id="loginError"></div>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginEmail"><i class="fas fa-envelope"></i> Email Address</label>
+                            <input type="email" id="loginEmail" name="loginEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
+                            <input type="password" id="loginPassword" name="loginPassword" required>
+                        </div>
+                        <div class="remember-me">
+                            <input type="checkbox" id="rememberMe" name="rememberMe">
+                            <label for="rememberMe">Remember me</label>
+                        </div>
+                        <button type="submit" class="cta-button" style="width: 100%;">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                    </form>
+                    <div style="margin-top: 1rem; padding: 1rem; background: #e3f2fd; border-radius: 8px; font-size: 0.9rem;">
+                        <strong>Demo Login Credentials:</strong><br>
+                        <strong>Alex Johnson:</strong> alex@barbershop.com / password123<br>
+                        <strong>Sarah Chen:</strong> sarah@barbershop.com / password123
+                    </div>
+                </div>
+            </section>
+            <!-- Team Dashboard -->
+            <section id="team-dashboard" class="section">
+                <h2>Team Dashboard</h2>
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="todayAppointments">0</div>
+                        <div class="stat-label">Today's Appointments</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="weekAppointments">0</div>
+                        <div class="stat-label">This Week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="revenue">$0</div>
+                        <div class="stat-label">Estimated Revenue</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalAppointments">0</div>
+                        <div class="stat-label">Total Appointments</div>
+                    </div>
+                </div>
+                <!-- Schedule on Dashboard -->
+                <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #1a2a6c; border-left: 4px solid #fdbb2d; padding-left: 15px;">
+                    <i class="fas fa-calendar-alt"></i> Weekly Schedule
+                </h3>
+                <div class="schedule-container" id="dashboardSchedule">
+                    <!-- Schedule will be generated here -->
+                </div>
+            </section>
+            <!-- Team Appointments -->
+            <section id="team-appointments" class="section">
+                <h2>Appointments</h2>
+                <div id="teamAppointmentsList">
+                    <!-- Appointments will be grouped by day -->
+                </div>
+            </section>
+            <!-- Services Settings Section -->
+            <section id="services-settings" class="section">
+                <h2>Service Settings</h2>
+                <div class="services-form">
+                    <div class="success-message" id="servicesSuccess"></div>
+                    <div class="error-message" id="servicesError"></div>
+                    <h3 style="margin-bottom: 1.5rem; color: #1a2a6c; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-plus-circle"></i> Add New Service
+                    </h3>
+                    <form id="serviceForm">
+                        <div class="form-group">
+                            <label for="serviceName"><i class="fas fa-tag"></i> Service Name</label>
+                            <input type="text" id="serviceName" name="serviceName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="servicePrice"><i class="fas fa-dollar-sign"></i> Price</label>
+                            <input type="number" id="servicePrice" name="servicePrice" min="5" step="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="serviceDuration"><i class="fas fa-clock"></i> Duration (minutes)</label>
+                            <input type="number" id="serviceDuration" name="serviceDuration" value="30" min="15" max="120" step="15" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="serviceTeamMembers"><i class="fas fa-users"></i> Available For</label>
+                            <div id="teamMembersCheckbox" style="margin-top: 10px;">
+                                <!-- Team members checkboxes will be added here -->
+                            </div>
+                        </div>
+                        <button type="submit" class="add-service-btn" style="width: 100%;">
+                            <i class="fas fa-plus"></i> Add Service
+                        </button>
+                    </form>
+                    <div class="services-list">
+                        <h3 style="margin: 2rem 0 1rem; color: #1a2a6c; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-list"></i> Current Services
+                        </h3>
+                        <div id="servicesListContainer">
+                            <!-- Services will be listed here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Team Settings Section -->
+            <section id="team-settings" class="section">
+                <h2>Team Settings</h2>
+                <div class="team-settings-container">
+                    <div class="settings-column">
+                        <h3 style="margin-bottom: 1.5rem; color: #1a2a6c; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-plus-circle"></i> Add New Team Member
+                        </h3>
+                        <form id="teamMemberForm">
+                            <div class="form-group">
+                                <label for="teamMemberName"><i class="fas fa-user"></i> Full Name</label>
+                                <input type="text" id="teamMemberName" name="teamMemberName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="teamMemberEmail"><i class="fas fa-envelope"></i> Email</label>
+                                <input type="email" id="teamMemberEmail" name="teamMemberEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="teamMemberPassword"><i class="fas fa-lock"></i> Password</label>
+                                <input type="password" id="teamMemberPassword" name="teamMemberPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="teamMemberTitle"><i class="fas fa-briefcase"></i> Title</label>
+                                <input type="text" id="teamMemberTitle" name="teamMemberTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="teamMemberLocation"><i class="fas fa-map-marker-alt"></i> Location</label>
+                                <select id="teamMemberLocation" name="teamMemberLocation" required>
+                                    <option value="">Select location</option>
+                                    <option value="sofias">Sofias Sliman 7-9</option>
+                                    <option value="trifulias">Trifulias 57</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="add-team-btn" style="width: 100%;">
+                                <i class="fas fa-plus"></i> Add Team Member
+                            </button>
+                        </form>
+                    </div>
+                    <div class="settings-column">
+                        <h3 style="margin-bottom: 1.5rem; color: #1a2a6c; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-users"></i> Current Team Members
+                        </h3>
+                        <div id="teamMembersList">
+                            <!-- Team members will be listed here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Customer Booking Section -->
+            <section id="booking" class="section">
+                <h2>Book Your Appointment</h2>
+                <div class="booking-form">
+                    <div class="success-message" id="successMessage"></div>
+                    <div class="error-message" id="bookingError"></div>
+                    <form id="bookingForm">
+                        <div class="form-group">
+                            <label for="clientName"><i class="fas fa-user"></i> Your Name</label>
+                            <input type="text" id="clientName" name="clientName">
+                        </div>
+                        <div class="form-group">
+                            <label for="clientEmail"><i class="fas fa-envelope"></i> Email Address</label>
+                            <input type="email" id="clientEmail" name="clientEmail">
+                        </div>
+                        <div class="form-group required">
+                            <label for="clientPhone"><i class="fas fa-phone"></i> Phone Number<span class="required">*</span></label>
+                            <input type="tel" id="clientPhone" name="clientPhone" required>
+                        </div>
+                        
+                        <div class="form-group location-select">
+                            <label for="location"><i class="fas fa-map-marker-alt"></i> Choose Location</label>
+                            <select id="location" name="location" required>
+                                <option value="">Select a location</option>
+                                <option value="sofias">Sofias Sliman 7-9</option>
+                                <option value="trifulias">Trifulias 57</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="teamMember"><i class="fas fa-user-tie"></i> Select Barber</label>
+                            <select id="teamMember" name="teamMember" required>
+                                <option value="">Choose a barber</option>
+                                <!-- Team members will be populated here -->
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="appointmentDate"><i class="fas fa-calendar-day"></i> Appointment Date</label>
+                            <input type="date" id="appointmentDate" name="appointmentDate" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-clock"></i> Available Time Slots</label>
+                            <div class="time-slots" id="timeSlots">
+                                <!-- Time slots will be generated here -->
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="serviceSelection"><i class="fas fa-concierge-bell"></i> Select Service</label>
+                            <select id="serviceSelection" name="serviceSelection" required>
+                                <option value="">Select a service</option>
+                                <!-- Services will be populated here -->
+                            </select>
+                        </div>
+                        
+                        <div id="selectedServiceInfo" style="display: none; background: rgba(26, 42, 108, 0.05); padding: 15px; border-radius: 8px; margin: 10px 0;">
+                            <p><strong>Service:</strong> <span id="serviceNameDisplay"></span></p>
+                            <p><strong>Price:</strong> $<span id="servicePriceDisplay"></span></p>
+                            <p><strong>Duration:</strong> <span id="serviceDurationDisplay"></span> minutes</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notes"><i class="fas fa-sticky-note"></i> Additional Notes (Optional)</label>
+                            <textarea id="notes" name="notes" rows="3" placeholder="Any specific requirements or information..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="cta-button" style="width: 100%;">
+                            <i class="fas fa-calendar-check"></i> Book Appointment
+                        </button>
+                    </form>
+                </div>
+            </section>
+            <!-- Team Section -->
+            <section id="team" class="section">
+                <h2>Meet Our Barbers</h2>
+                <div class="team-grid" id="teamMembersGrid">
+                    <!-- Team members will be populated here -->
+                </div>
+            </section>
+            <!-- Customer Appointments Section -->
+            <section id="customer-appointments" class="section">
+                <h2>My Appointments</h2>
+                <div class="appointments-list">
+                    <div class="form-group">
+                        <label for="viewAppointmentsEmail"><i class="fas fa-envelope"></i> Enter your phone number to view appointments</label>
+                        <input type="tel" id="viewAppointmentsEmail" required>
+                        <button class="cta-button" onclick="displayCustomerAppointments()" style="margin-top: 10px; width: 100%;">
+                            <i class="fas fa-search"></i> View Appointments
+                        </button>
+                    </div>
+                    <div id="customerAppointmentsList">
+                        <p style="text-align: center; color: #666; font-style: italic;">Enter your phone number and click "View Appointments" to see your appointments.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- Add Appointment Modal -->
+    <div class="modal" id="addAppointmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Appointment</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="addAppointmentForm">
+                <input type="hidden" id="appointmentDateForModal">
+                <div class="form-group">
+                    <label for="customerName"><i class="fas fa-user"></i> Customer Name</label>
+                    <input type="text" id="customerName" name="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerEmail"><i class="fas fa-envelope"></i> Customer Email</label>
+                    <input type="email" id="customerEmail" name="customerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="appointmentTimeModal"><i class="fas fa-clock"></i> Time</label>
+                    <select id="appointmentTimeModal" name="appointmentTime" required>
+                        <!-- Time slots will be populated here -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="serviceSelectionModal"><i class="fas fa-concierge-bell"></i> Service</label>
+                    <select id="serviceSelectionModal" name="serviceSelection" required>
+                        <option value="">Select a service</option>
+                        <!-- Services will be populated here -->
+                    </select>
+                </div>
+                <div id="selectedServiceModalInfo" style="display: none; background: rgba(26, 42, 108, 0.05); padding: 15px; border-radius: 8px; margin: 10px 0;">
+                    <p><strong>Price:</strong> $<span id="servicePriceModalDisplay"></span></p>
+                    <p><strong>Duration:</strong> <span id="serviceDurationModalDisplay"></span> minutes</p>
+                </div>
+                <div class="form-group">
+                    <label for="notesModal"><i class="fas fa-sticky-note"></i> Notes (Optional)</label>
+                    <textarea id="notesModal" name="notes" rows="2"></textarea>
+                </div>
+                <!-- Recurring Appointments -->
+                <div class="recurring-options" id="recurringOptions">
+                    <div class="recurring-header" onclick="toggleRecurring('modal')">
+                        <i class="fas fa-sync-alt"></i>
+                        <h4>Recurring Appointment</h4>
+                        <i class="fas fa-chevron-down" id="recurringChevronModal"></i>
+                    </div>
+                    <div class="recurring-content" id="recurringContentModal">
+                        <div class="form-group">
+                            <label for="recurrenceType"><i class="fas fa-repeat"></i> Recurrence</label>
+                            <select id="recurrenceType" name="recurrenceType">
+                                <option value="">None</option>
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="biweekly">Bi-weekly</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="occurrences"><i class="fas fa-calendar-check"></i> Number of Appointments</label>
+                            <input type="number" id="occurrences" name="occurrences" min="1" max="100" value="1">
+                        </div>
+                        <div class="remember-me" style="margin-top: 10px;">
+                            <input type="checkbox" id="foreverRecurrence" onchange="toggleForeverRecurrence('modal')">
+                            <label for="foreverRecurrence">Recur Forever</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="cta-button" style="width: 100%; margin-top: 1.5rem;">
+                    <i class="fas fa-calendar-plus"></i> Add Appointment
+                </button>
+            </form>
+        </div>
+    </div>
+    <!-- Edit Team Member Modal -->
+    <div class="modal" id="editTeamMemberModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Team Member</h3>
+                <button class="close-modal" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form id="editTeamMemberForm">
+                <input type="hidden" id="editMemberId">
+                <div class="form-group">
+                    <label for="editMemberName"><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" id="editMemberName" name="editMemberName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editMemberEmail"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="editMemberEmail" name="editMemberEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="editMemberTitle"><i class="fas fa-briefcase"></i> Title</label>
+                    <input type="text" id="editMemberTitle" name="editMemberTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="editMemberLocation"><i class="fas fa-map-marker-alt"></i> Location</label>
+                    <select id="editMemberLocation" name="editMemberLocation" required>
+                        <option value="">Select location</option>
+                        <option value="sofias">Sofias Sliman 7-9</option>
+                        <option value="trifulias">Trifulias 57</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editMemberPassword"><i class="fas fa-lock"></i> New Password (leave blank to keep current)</label>
+                    <input type="password" id="editMemberPassword" name="editMemberPassword">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-concierge-bell"></i> Services Offered</label>
+                    <div id="editServicesCheckbox" style="margin-top: 10px;">
+                        <!-- Services checkboxes will be added here -->
+                    </div>
+                </div>
+                <button type="submit" class="cta-button" style="width: 100%; margin-top: 1rem;">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Global variables
+        let appointments = [];
+        let selectedTimeSlot = null;
+        let currentUser = null;
+        let currentUserRole = null;
+        let services = [
+            { id: 1, name: "Haircut", price: 35, duration: 30 },
+            { id: 2, name: "Beard Trim", price: 20, duration: 30 },
+            { id: 3, name: "Hot Towel Shave", price: 45, duration: 30 },
+            { id: 4, name: "Hair Coloring", price: 75, duration: 60 },
+            { id: 5, name: "Styling", price: 30, duration: 30 }
+        ];
+        // Team member data
+        let teamMembers = {
+            'alex': {
+                id: 'alex',
+                name: 'Alex Johnson',
+                title: 'Master Barber',
+                email: 'alex@barbershop.com',
+                password: 'password123',
+                location: 'trifulias',
+                services: [1, 2, 3] // IDs of services
+            },
+            'sarah': {
+                id: 'sarah',
+                name: 'Sarah Chen',
+                title: 'Senior Stylist',
+                email: 'sarah@barbershop.com',
+                password: 'password123',
+                location: 'sofias',
+                services: [1, 4, 5] // IDs of services
+            }
+        };
+        // Days of the week
+        const daysOfWeek = [
+            { id: 0, name: 'Sunday', short: 'Sun' },
+            { id: 1, name: 'Monday', short: 'Mon' },
+            { id: 2, name: 'Tuesday', short: 'Tue' },
+            { id: 3, name: 'Wednesday', short: 'Wed' },
+            { id: 4, name: 'Thursday', short: 'Thu' },
+            { id: 5, name: 'Friday', short: 'Fri' },
+            { id: 6, name: 'Saturday', short: 'Sat' }
+        ];
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('appointmentDate').min = today;
+            document.getElementById('appointmentDate').value = today;
+            // Load data from localStorage
+            loadFromLocalStorage();
+            // Check for remembered login
+            checkRememberedLogin();
+            // Setup event listeners
+            setupEventListeners();
+            // Initialize services dropdown
+            populateTeamMembersDropdown();
+            populateTeamMembersGrid();
+            populateTeamMembersList();
+            
+            // Event listener for location change
+            document.getElementById('location')?.addEventListener('change', function() {
+                const selectedLocation = this.value;
+                updateBarberList(selectedLocation);
+                updateAvailableSlots();
+                populateServicesDropdown();
+            });
+            
+            // Update barber list when form is loaded
+            if (document.getElementById('location')) {
+                const savedLocation = document.getElementById('location').value;
+                updateBarberList(savedLocation);
+            }
+        });
+        
+        function setupEventListeners() {
+            // Form submissions
+            document.getElementById('bookingForm')?.addEventListener('submit', handleBooking);
+            document.getElementById('loginForm')?.addEventListener('submit', handleLogin);
+            document.getElementById('addAppointmentForm')?.addEventListener('submit', handleAddAppointment);
+            document.getElementById('serviceForm')?.addEventListener('submit', handleAddService);
+            document.getElementById('teamMemberForm')?.addEventListener('submit', handleAddTeamMember);
+            document.getElementById('editTeamMemberForm')?.addEventListener('submit', handleEditTeamMember);
+            // Service selection
+            document.getElementById('serviceSelection')?.addEventListener('change', updateServiceInfo);
+            document.getElementById('serviceSelectionModal')?.addEventListener('change', updateModalServiceInfo);
+            // Time slot selection
+            document.querySelectorAll('.time-slot')?.forEach(slot => {
+                slot.addEventListener('click', selectTimeSlot);
+            });
+            // Date change to update available slots
+            document.getElementById('appointmentDate')?.addEventListener('change', validateAppointmentDate);
+            document.getElementById('teamMember')?.addEventListener('change', function() {
+                updateAvailableSlots();
+                populateServicesDropdown();
+            });
+        }
+        
+        function loadFromLocalStorage() {
+            // Load appointments from localStorage
+            const savedAppointments = localStorage.getItem('barbershopAppointments');
+            if (savedAppointments) {
+                appointments = JSON.parse(savedAppointments);
+            } else {
+                // If no saved appointments, load sample data
+                loadSampleData();
+            }
+            // Load services from localStorage
+            const savedServices = localStorage.getItem('barbershopServices');
+            if (savedServices) {
+                services = JSON.parse(savedServices);
+            }
+            // Load team members from localStorage
+            const savedTeamMembers = localStorage.getItem('barbershopTeamMembers');
+            if (savedTeamMembers) {
+                teamMembers = JSON.parse(savedTeamMembers);
+            }
+        }
+        
+        function saveToLocalStorage() {
+            // Save appointments to localStorage
+            localStorage.setItem('barbershopAppointments', JSON.stringify(appointments));
+            // Save services to localStorage
+            localStorage.setItem('barbershopServices', JSON.stringify(services));
+            // Save team members to localStorage
+            localStorage.setItem('barbershopTeamMembers', JSON.stringify(teamMembers));
+        }
+        
+        function checkRememberedLogin() {
+            const rememberedEmail = localStorage.getItem('rememberedEmail');
+            const rememberedPassword = localStorage.getItem('rememberedPassword');
+            if (rememberedEmail && rememberedPassword) {
+                document.getElementById('loginEmail').value = rememberedEmail;
+                document.getElementById('loginPassword').value = rememberedPassword;
+                document.getElementById('rememberMe').checked = true;
+            }
+        }
+        
+        function populateTeamMembersDropdown() {
+            const memberDropdown = document.getElementById('teamMember');
+            if (!memberDropdown) return;
+            
+            memberDropdown.innerHTML = '<option value="">Choose a barber</option>';
+            // Add team members to dropdown
+            Object.values(teamMembers).forEach(member => {
+                const option = document.createElement('option');
+                option.value = member.id;
+                option.textContent = `${member.name} - ${member.title}`;
+                memberDropdown.appendChild(option);
+            });
+        }
+        
+        function updateBarberList(location) {
+            const memberDropdown = document.getElementById('teamMember');
+            if (!memberDropdown) return;
+            
+            // Get current selected option
+            const currentSelection = memberDropdown.value;
+            
+            // Clear current options
+            memberDropdown.innerHTML = '<option value="">Choose a barber</option>';
+            
+            // Filter team members by location
+            const filteredMembers = Object.values(teamMembers).filter(member => 
+                member.location === location
+            );
+            
+            // Add filtered members back to dropdown
+            filteredMembers.forEach(member => {
+                const option = document.createElement('option');
+                option.value = member.id;
+                option.textContent = `${member.name} - ${member.title}`;
+                memberDropdown.appendChild(option);
+            });
+            
+            // Restore previous selection if possible
+            if (filteredMembers.some(member => member.id === currentSelection)) {
+                memberDropdown.value = currentSelection;
+            }
+            
+            // Update services dropdown
+            populateServicesDropdown();
+            // Update time slots
+            updateAvailableSlots();
+        }
+        
+        function populateTeamMembersGrid() {
+            const teamGrid = document.getElementById('teamMembersGrid');
+            if (!teamGrid) return;
+            
+            teamGrid.innerHTML = '';
+            Object.values(teamMembers).forEach(member => {
+                const memberServices = services.filter(service => member.services.includes(service.id));
+                const memberDiv = document.createElement('div');
+                memberDiv.className = 'team-member';
+                memberDiv.innerHTML = `
+                    <div class="team-member-img">${member.name.split(' ').map(n => n[0]).join('')}</div>
+                    <h3>${member.name}</h3>
+                    <p><strong>${member.title}</strong></p>
+                    <p><strong>Location:</strong> ${member.location === 'sofias' ? 'Sofias Sliman 7-9' : 'Trifulias 57'}</p>
+                    <div style="margin-top: 1rem; text-align: left;">
+                        <h4 style="color: #1a2a6c; margin-bottom: 0.5rem;">Services Offered:</h4>
+                        <ul style="list-style: none; padding-left: 0;">
+                            ${memberServices.map(service =>
+                                `<li><i class="fas fa-cut" style="color: #fdbb2d;"></i> ${service.name} - $${service.price}</li>`
+                            ).join('')}
+                        </ul>
+                    </div>
+                `;
+                teamGrid.appendChild(memberDiv);
+            });
+        }
+        
+        function populateTeamMembersList() {
+            const teamList = document.getElementById('teamMembersList');
+            if (!teamList) return;
+            
+            teamList.innerHTML = '';
+            Object.values(teamMembers).forEach(member => {
+                const memberDiv = document.createElement('div');
+                memberDiv.className = 'service-item';
+                memberDiv.innerHTML = `
+                    <div class="service-info">
+                        <div class="service-name">${member.name}</div>
+                        <div class="service-price">${member.title}</div>
+                        <div class="service-price">${member.location === 'sofias' ? 'Sofias Sliman 7-9' : 'Trifulias 57'}</div>
+                    </div>
+                    <div>
+                        <button class="edit-team-btn" onclick="openEditTeamMemberModal('${member.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete-team-btn" onclick="deleteTeamMember('${member.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                teamList.appendChild(memberDiv);
+            });
+        }
+        
+        function openEditTeamMemberModal(memberId) {
+            const member = teamMembers[memberId];
+            if (!member) return;
+            document.getElementById('editMemberId').value = memberId;
+            document.getElementById('editMemberName').value = member.name;
+            document.getElementById('editMemberEmail').value = member.email;
+            document.getElementById('editMemberTitle').value = member.title;
+            document.getElementById('editMemberLocation').value = member.location;
+            
+            // Populate services checkboxes
+            const servicesContainer = document.getElementById('editServicesCheckbox');
+            servicesContainer.innerHTML = '';
+            services.forEach(service => {
+                const isChecked = member.services.includes(service.id);
+                const checkbox = document.createElement('div');
+                checkbox.className = 'remember-me';
+                checkbox.style.marginBottom = '0.5rem';
+                checkbox.innerHTML = `
+                    <input type="checkbox" id="edit-service-${service.id}"
+                           name="editServices" value="${service.id}" ${isChecked ? 'checked' : ''}>
+                    <label for="edit-service-${service.id}">${service.name}</label>
+                `;
+                servicesContainer.appendChild(checkbox);
+            });
+            
+            // Show modal
+            document.getElementById('editTeamMemberModal').style.display = 'flex';
+        }
+        
+        function closeEditModal() {
+            document.getElementById('editTeamMemberModal').style.display = 'none';
+        }
+        
+        function handleEditTeamMember(e) {
+            e.preventDefault();
+            const memberId = document.getElementById('editMemberId').value;
+            const member = teamMembers[memberId];
+            if (!member) return;
+            
+            // Update member details
+            member.name = document.getElementById('editMemberName').value;
+            member.email = document.getElementById('editMemberEmail').value;
+            member.title = document.getElementById('editMemberTitle').value;
+            member.location = document.getElementById('editMemberLocation').value;
+            
+            // Update password if provided
+            const newPassword = document.getElementById('editMemberPassword').value;
+            if (newPassword) {
+                member.password = newPassword;
+            }
+            
+            // Update services
+            const selectedServices = [];
+            document.querySelectorAll('input[name="editServices"]:checked').forEach(checkbox => {
+                selectedServices.push(parseInt(checkbox.value));
+            });
+            member.services = selectedServices;
+            
+            // Save to localStorage
+            saveToLocalStorage();
+            
+            // Update UI
+            populateTeamMembersDropdown();
+            populateTeamMembersGrid();
+            populateTeamMembersList();
+            populateServicesDropdown();
+            
+            // Close modal
+            closeEditModal();
+            showSuccess('servicesSuccess', 'Team member updated successfully!');
+        }
+        
+        function deleteTeamMember(memberId) {
+            if (confirm('Are you sure you want to delete this team member?')) {
+                delete teamMembers[memberId];
+                // Save to localStorage
+                saveToLocalStorage();
+                // Update UI
+                populateTeamMembersDropdown();
+                populateTeamMembersGrid();
+                populateTeamMembersList();
+                populateServicesDropdown();
+                showSuccess('servicesSuccess', 'Team member deleted successfully!');
+            }
+        }
+        
+        function populateServicesDropdown() {
+            const serviceDropdown = document.getElementById('serviceSelection');
+            if (!serviceDropdown) return;
+            
+            serviceDropdown.innerHTML = '<option value="">Select a service</option>';
+            const memberId = document.getElementById('teamMember').value;
+            if (!memberId) return;
+            
+            const member = teamMembers[memberId];
+            if (!member) return;
+            
+            // Get services for this team member
+            const memberServices = services.filter(service => member.services.includes(service.id));
+            
+            // Add services to dropdown
+            memberServices.forEach(service => {
+                const option = document.createElement('option');
+                option.value = service.id;
+                option.textContent = `${service.name} - $${service.price}`;
+                serviceDropdown.appendChild(option);
+            });
+        }
+        
+        function updateServiceInfo() {
+            const serviceId = parseInt(document.getElementById('serviceSelection').value);
+            if (!serviceId) {
+                document.getElementById('selectedServiceInfo').style.display = 'none';
+                return;
+            }
+            
+            const service = services.find(s => s.id === serviceId);
+            if (!service) return;
+            
+            document.getElementById('serviceNameDisplay').textContent = service.name;
+            document.getElementById('servicePriceDisplay').textContent = service.price;
+            document.getElementById('serviceDurationDisplay').textContent = service.duration;
+            document.getElementById('selectedServiceInfo').style.display = 'block';
+        }
+        
+        function updateModalServiceInfo() {
+            const serviceId = parseInt(document.getElementById('serviceSelectionModal').value);
+            if (!serviceId) {
+                document.getElementById('selectedServiceModalInfo').style.display = 'none';
+                return;
+            }
+            
+            const service = services.find(s => s.id === serviceId);
+            if (!service) return;
+            
+            document.getElementById('servicePriceModalDisplay').textContent = service.price;
+            document.getElementById('serviceDurationModalDisplay').textContent = service.duration;
+            document.getElementById('selectedServiceModalInfo').style.display = 'block';
+        }
+        
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            // Find team member by email
+            const teamMember = Object.values(teamMembers).find(member => 
+                member.email === email && member.password === password
+            );
+            
+            if (teamMember) {
+                currentUser = teamMember;
+                currentUserRole = 'team';
+                
+                // Update UI for team member
+                document.getElementById('customerNav').classList.add('hidden');
+                document.getElementById('teamNav').classList.remove('hidden');
+                document.getElementById('userInfo').classList.remove('hidden');
+                document.getElementById('userName').textContent = teamMember.name;
+                document.getElementById('heroSection').classList.add('hidden');
+                
+                // Show dashboard
+                showSection('team-dashboard');
+                updateDashboardStats();
+                updateDashboardSchedule();
+                populateServicesList();
+                
+                // Handle remember me
+                if (rememberMe) {
+                    localStorage.setItem('rememberedEmail', email);
+                    localStorage.setItem('rememberedPassword', password);
+                } else {
+                    localStorage.removeItem('rememberedEmail');
+                    localStorage.removeItem('rememberedPassword');
+                }
+                
+                // Clear login form
+                document.getElementById('loginForm').reset();
+            } else {
+                showError('loginError', 'Invalid email or password. Please try again.');
+            }
+        }
+        
+        function logout() {
+            currentUser = null;
+            currentUserRole = null;
+            
+            // Reset UI
+            document.getElementById('customerNav').classList.remove('hidden');
+            document.getElementById('teamNav').classList.add('hidden');
+            document.getElementById('userInfo').classList.add('hidden');
+            document.getElementById('heroSection').classList.remove('hidden');
+            
+            // Show home section
+            showSection('home');
+        }
+        
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update content based on section
+            if (sectionId === 'customer-appointments') {
+                // Do nothing - wait for user to enter phone number
+            } else if (sectionId === 'team-appointments') {
+                displayTeamAppointments();
+            } else if (sectionId === 'team-dashboard') {
+                updateDashboardStats();
+                updateDashboardSchedule();
+            } else if (sectionId === 'services-settings') {
+                populateServicesList();
+                populateTeamMembersCheckbox();
+            } else if (sectionId === 'team-settings') {
+                populateTeamMembersList();
+            } else if (sectionId === 'team') {
+                populateTeamMembersGrid();
+            } else if (sectionId === 'booking') {
+                updateAvailableSlots();
+                populateServicesDropdown();
+            }
+        }
+        
+        function populateTeamMembersCheckbox() {
+            const container = document.getElementById('teamMembersCheckbox');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            Object.values(teamMembers).forEach(member => {
+                const checkbox = document.createElement('div');
+                checkbox.className = 'remember-me';
+                checkbox.style.marginBottom = '0.5rem';
+                checkbox.innerHTML = `
+                    <input type="checkbox" id="member-${member.id}"
+                           name="teamMembers" value="${member.id}">
+                    <label for="member-${member.id}">${member.name}</label>
+                `;
+                container.appendChild(checkbox);
+            });
+        }
+        
+        function handleAddService(e) {
+            e.preventDefault();
+            if (!currentUser) return;
+            
+            const serviceName = document.getElementById('serviceName').value;
+            const servicePrice = parseFloat(document.getElementById('servicePrice').value);
+            const serviceDuration = parseInt(document.getElementById('serviceDuration').value);
+            
+            const newService = {
+                id: services.length > 0 ? Math.max(...services.map(s => s.id)) + 1 : 1,
+                name: serviceName,
+                price: servicePrice,
+                duration: serviceDuration
+            };
+            
+            services.push(newService);
+            
+            // Get selected team members
+            const selectedMembers = [];
+            document.querySelectorAll('input[name="teamMembers"]:checked').forEach(checkbox => {
+                const memberId = checkbox.value;
+                if (!teamMembers[memberId].services.includes(newService.id)) {
+                    teamMembers[memberId].services.push(newService.id);
+                }
+            });
+            
+            // Save to localStorage
+            saveToLocalStorage();
+            
+            // Reset form
+            e.target.reset();
+            
+            // Update services list
+            populateServicesList();
+            showSuccess('servicesSuccess', 'Service added successfully!');
+        }
+        
+        function handleAddTeamMember(e) {
+            e.preventDefault();
+            const name = document.getElementById('teamMemberName').value;
+            const email = document.getElementById('teamMemberEmail').value;
+            const password = document.getElementById('teamMemberPassword').value;
+            const title = document.getElementById('teamMemberTitle').value;
+            const location = document.getElementById('teamMemberLocation').value;
+            
+            // Generate unique ID
+            const id = name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now().toString().slice(-5);
+            
+            // Create new team member
+            teamMembers[id] = {
+                id: id,
+                name: name,
+                title: title,
+                email: email,
+                password: password,
+                location: location,
+                services: []
+            };
+            
+            // Save to localStorage
+            saveToLocalStorage();
+            
+            // Reset form
+            e.target.reset();
+            
+            // Update UI
+            populateTeamMembersDropdown();
+            populateTeamMembersGrid();
+            populateTeamMembersList();
+            showSuccess('servicesSuccess', 'Team member added successfully!');
+        }
+        
+        function populateServicesList() {
+            if (!currentUser) return;
+            const servicesList = document.getElementById('servicesListContainer');
+            if (!servicesList) return;
+            
+            servicesList.innerHTML = '';
+            if (services.length === 0) {
+                servicesList.innerHTML = '<p style="text-align: center; color: #666; font-style: italic;">No services added yet.</p>';
+                return;
+            }
+            
+            services.forEach(service => {
+                const serviceItem = document.createElement('div');
+                serviceItem.className = 'service-item';
+                serviceItem.innerHTML = `
+                    <div class="service-info">
+                        <div class="service-name">${service.name}</div>
+                        <div class="service-price">$${service.price} (${service.duration} mins)</div>
+                    </div>
+                    <button class="delete-service-btn" onclick="deleteService(${service.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                servicesList.appendChild(serviceItem);
+            });
+        }
+        
+        function deleteService(serviceId) {
+            if (confirm('Are you sure you want to delete this service?')) {
+                // Remove service from global services
+                services = services.filter(service => service.id !== serviceId);
+                
+                // Remove service from all team members
+                Object.values(teamMembers).forEach(member => {
+                    member.services = member.services.filter(id => id !== serviceId);
+                });
+                
+                // Save to localStorage
+                saveToLocalStorage();
+                
+                // Update services list
+                populateServicesList();
+                populateServicesDropdown();
+                showSuccess('servicesSuccess', 'Service deleted successfully!');
+            }
+        }
+        
+        function completeAppointment(appointmentId) {
+            const appointment = appointments.find(apt => apt.id === appointmentId);
+            if (appointment) {
+                appointment.status = 'completed';
+                saveToLocalStorage();
+                displayTeamAppointments();
+                updateDashboardStats();
+                updateDashboardSchedule();
+                showSuccess('servicesSuccess', 'Appointment marked as completed!');
+            }
+        }
+        
+        function cancelAppointment(appointmentId) {
+            if (confirm('Are you sure you want to cancel this appointment?')) {
+                const appointment = appointments.find(apt => apt.id === appointmentId);
+                if (appointment) {
+                    appointment.status = 'cancelled';
+                    saveToLocalStorage();
+                    
+                    if (currentUserRole === 'team') {
+                        displayTeamAppointments();
+                        updateDashboardStats();
+                        updateDashboardSchedule();
+                    } else {
+                        displayCustomerAppointments();
+                    }
+                    
+                    updateAvailableSlots();
+                }
+            }
+        }
+        
+        function showSuccess(elementId, message) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            element.textContent = message;
+            element.style.display = 'block';
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
+        
+        function showError(elementId, message) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            element.textContent = message;
+            element.style.display = 'block';
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
+        
+        function loadSampleData() {
+            // Add some sample appointments for demonstration
+            const today = new Date();
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const dayAfterTomorrow = new Date();
+            dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+            
+            appointments.push({
+                id: 1,
+                name: 'John Smith',
+                email: 'john@example.com',
+                phone: '555-0123',
+                teamMember: 'alex',
+                teamMemberName: 'Alex Johnson - Master Barber',
+                location: 'trifulias',
+                date: today.toISOString().split('T')[0],
+                time: '10:00',
+                serviceId: 1,
+                serviceName: "Haircut",
+                price: 35,
+                notes: 'Regular haircut',
+                status: 'confirmed',
+                createdAt: new Date().toISOString()
+            });
+            
+            appointments.push({
+                id: 2,
+                name: 'Jane Doe',
+                email: 'jane@example.com',
+                phone: '555-0456',
+                teamMember: 'sarah',
+                teamMemberName: 'Sarah Chen - Senior Stylist',
+                location: 'sofias',
+                date: tomorrow.toISOString().split('T')[0],
+                time: '14:00',
+                serviceId: 4,
+                serviceName: "Hair Coloring",
+                price: 75,
+                notes: 'Special occasion',
+                status: 'confirmed',
+                createdAt: new Date().toISOString()
+            });
+            
+            appointments.push({
+                id: 3,
+                name: 'Bob Johnson',
+                email: 'bob@example.com',
+                phone: '555-0789',
+                teamMember: 'alex',
+                teamMemberName: 'Alex Johnson - Master Barber',
+                location: 'trifulias',
+                date: dayAfterTomorrow.toISOString().split('T')[0],
+                time: '15:00',
+                serviceId: 2,
+                serviceName: "Beard Trim",
+                price: 20,
+                notes: 'Shape and trim',
+                status: 'confirmed',
+                createdAt: new Date().toISOString()
+            });
+            
+            // Save sample data to localStorage
+            saveToLocalStorage();
+        }
+        
+        function selectTimeSlot(e) {
+            if (e.target.classList.contains('unavailable')) return;
+            
+            // Remove previous selection
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            
+            // Select new slot
+            e.target.classList.add('selected');
+            selectedTimeSlot = e.target.dataset.time;
+        }
+        
+        function validateAppointmentDate(e) {
+            const selectedDate = new Date(e.target.value);
+            const today = new Date();
+            
+            // Set minimum date to today
+            const todayStr = today.toISOString().split('T')[0];
+            e.target.min = todayStr;
+            
+            // Calculate date 14 days ahead
+            const futureDate = new Date();
+            futureDate.setDate(futureDate.getDate() + 14);
+            const maxDateStr = futureDate.toISOString().split('T')[0];
+            e.target.max = maxDateStr;
+            
+            // Validate customer appointment date (14-day limit)
+            if (currentUserRole === 'customer') {
+                const selectedDateStr = e.target.value;
+                const selectedDateObj = new Date(selectedDateStr);
+                
+                if (selectedDateObj > futureDate) {
+                    showError('bookingError', 'You cannot book more than 14 days in advance for customer appointments.');
+                    e.target.value = todayStr; // Reset to today's date
+                }
+            }
+            
+            // Update available slots
+            updateAvailableSlots();
+        }
+        
+        function updateAvailableSlots() {
+            const selectedDate = document.getElementById('appointmentDate').value;
+            const selectedMember = document.getElementById('teamMember').value;
+            if (!selectedDate || !selectedMember) return;
+            
+            const timeSlotsContainer = document.getElementById('timeSlots');
+            timeSlotsContainer.innerHTML = '';
+            
+            // Generate time slots (every 30 minutes from 9am to 6pm)
+            const startHour = 9;
+            const endHour = 18;
+            const slots = [];
+            for (let hour = startHour; hour < endHour; hour++) {
+                for (let minute = 0; minute < 60; minute += 30) {
+                    const hourStr = hour.toString().padStart(2, '0');
+                    const minStr = minute.toString().padStart(2, '0');
+                    slots.push(`${hourStr}:${minStr}`);
+                }
+            }
+            
+            // Check for conflicts with existing appointments
+            const dateAppointments = appointments.filter(apt => 
+                apt.date === selectedDate &&
+                apt.teamMember === selectedMember &&
+                apt.status !== 'cancelled'
+            );
+            
+            // Create time slot elements
+            slots.forEach(time => {
+                const slot = document.createElement('div');
+                slot.className = 'time-slot';
+                slot.dataset.time = time;
+                
+                // Format time for display (convert to 12-hour format)
+                const [hours, minutes] = time.split(':');
+                const hour = parseInt(hours);
+                const period = hour >= 12 ? 'PM' : 'AM';
+                const displayHour = hour % 12 || 12;
+                slot.textContent = `${displayHour}:${minutes} ${period}`;
+                
+                // Check if this slot is taken
+                const isTaken = dateAppointments.some(apt => apt.time === time);
+                if (isTaken) {
+                    slot.classList.add('unavailable');
+                } else {
+                    slot.addEventListener('click', selectTimeSlot);
+                }
+                
+                timeSlotsContainer.appendChild(slot);
+            });
+            
+            if (slots.length === 0) {
+                timeSlotsContainer.innerHTML = '<p style="text-align: center; color: #ff6b6b;">No available time slots</p>';
+            }
+            
+            selectedTimeSlot = null;
+        }
+        
+        function toggleRecurring(type) {
+            const options = document.getElementById(`recurringContent${type.charAt(0).toUpperCase() + type.slice(1)}`);
+            const chevron = document.getElementById(`recurringChevron${type.charAt(0).toUpperCase() + type.slice(1)}`);
+            
+            if (options.parentElement.classList.contains('expanded')) {
+                options.parentElement.classList.remove('expanded');
+                chevron.className = 'fas fa-chevron-down';
+            } else {
+                options.parentElement.classList.add('expanded');
+                chevron.className = 'fas fa-chevron-up';
+            }
+        }
+        
+        function toggleForeverRecurrence(type) {
+            const foreverCheckbox = document.getElementById(`foreverRecurrence${type.charAt(0).toUpperCase() + type.slice(1)}`);
+            const occurrencesInput = document.getElementById(`occurrences${type.charAt(0).toUpperCase() + type.slice(1)}`);
+            
+            if (foreverCheckbox.checked) {
+                occurrencesInput.value = 1000; // Set to a large number
+                occurrencesInput.disabled = true;
+            } else {
+                occurrencesInput.disabled = false;
+            }
+        }
+        
+        function handleBooking(e) {
+            e.preventDefault();
+            
+            if (!selectedTimeSlot) {
+                showError('bookingError', 'Please select a time slot for your appointment.');
+                return;
+            }
+            
+            const serviceId = parseInt(document.getElementById('serviceSelection').value);
+            if (!serviceId) {
+                showError('bookingError', 'Please select a service.');
+                return;
+            }
+            
+            const service = services.find(s => s.id === serviceId);
+            if (!service) return;
+            
+            // Get form data
+            const formData = new FormData(e.target);
+            const location = document.getElementById('location').value;
+            const appointment = {
+                id: Date.now(),
+                name: formData.get('clientName'),
+                email: formData.get('clientEmail'),
+                phone: formData.get('clientPhone'),
+                teamMember: formData.get('teamMember'),
+                teamMemberName: e.target.teamMember.options[e.target.teamMember.selectedIndex].text,
+                location: location,
+                date: formData.get('appointmentDate'),
+                time: selectedTimeSlot,
+                serviceId: serviceId,
+                serviceName: service.name,
+                price: service.price,
+                notes: formData.get('notes'),
+                status: 'confirmed',
+                createdAt: new Date().toISOString()
+            };
+            
+            // Add to appointments array
+            appointments.push(appointment);
+            
+            // Save to localStorage
+            saveToLocalStorage();
+            
+            // Show success message
+            showSuccess('successMessage', `Appointment booked successfully!`);
+            
+            // Reset form
+            e.target.reset();
+            selectedTimeSlot = null;
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            document.getElementById('selectedServiceInfo').style.display = 'none';
+            populateServicesDropdown();
+            updateAvailableSlots();
+        }
+        
+        function displayCustomerAppointments() {
+            const phoneNumber = document.getElementById('viewAppointmentsEmail').value;
+            const appointmentsList = document.getElementById('customerAppointmentsList');
+            
+            if (!phoneNumber) {
+                appointmentsList.innerHTML = '<p style="text-align: center; color: #ff6b6b;">Please enter your phone number.</p>';
+                return;
+            }
+            
+            const customerAppointments = appointments.filter(apt => 
+                apt.phone === phoneNumber && apt.status !== 'cancelled'
+            );
+            
+            if (customerAppointments.length === 0) {
+                appointmentsList.innerHTML = '<p style="text-align: center; color: #666; font-style: italic;">No appointments found for this phone number.</p>';
+                return;
+            }
+            
+            const appointmentsHTML = customerAppointments.map(apt => {
+                const appointmentDate = new Date(apt.date + ' ' + apt.time);
+                const formattedDate = appointmentDate.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                const formattedTime = appointmentDate.toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                });
+                
+                return `
+                    <div class="appointment-item">
+                        <div class="appointment-info">
+                            <h4><i class="fas fa-user-tie"></i> ${apt.teamMemberName}</h4>
+                            <p><i class="fas fa-map-marker-alt"></i> ${apt.location === 'sofias' ? 'Sofias Sliman 7-9' : 'Trifulias 57'}</p>
+                            <p><i class="fas fa-calendar-day"></i> ${formattedDate}</p>
+                            <p><i class="fas fa-clock"></i> ${formattedTime}</p>
+                            <p><i class="fas fa-concierge-bell"></i> ${apt.serviceName}</p>
+                            <p class="price"><i class="fas fa-dollar-sign"></i> $${apt.price}</p>
+                            <p><i class="fas fa-info-circle"></i> <span class="appointment-status status-${apt.status}">${apt.status}</span></p>
+                            ${apt.notes ? `<p><i class="fas fa-sticky-note"></i> ${apt.notes}</p>` : ''}
+                        </div>
+                        <div class="appointment-actions">
+                            ${apt.status === 'confirmed' ?
+                                `<button class="cancel-btn" onclick="cancelAppointment(${apt.id})"><i class="fas fa-times"></i> Cancel</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            appointmentsList.innerHTML = appointmentsHTML;
+        }
+        
+        function updateDashboardStats() {
+            if (!currentUser) return;
+            
+            const teamAppointments = appointments.filter(apt => 
+                apt.teamMember === currentUser.id && apt.status !== 'cancelled'
+            );
+            
+            const today = new Date().toISOString().split('T')[0];
+            const todayAppointments = teamAppointments.filter(apt => apt.date === today).length;
+            
+            // Get start of week
+            const startOfWeek = new Date();
+            startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+            const startOfWeekStr = startOfWeek.toISOString().split('T')[0];
+            
+            // Get end of week
+            const endOfWeek = new Date();
+            endOfWeek.setDate(endOfWeek.getDate() + (6 - endOfWeek.getDay()));
+            const endOfWeekStr = endOfWeek.toISOString().split('T')[0];
+            
+            const weekAppointments = teamAppointments.filter(apt => 
+                apt.date >= startOfWeekStr && apt.date <= endOfWeekStr
+            ).length;
+            
+            // Calculate revenue
+            const revenue = teamAppointments.reduce((sum, apt) => sum + apt.price, 0);
+            const totalAppointments = teamAppointments.length;
+            
+            // Update UI
+            document.getElementById('todayAppointments').textContent = todayAppointments;
+            document.getElementById('weekAppointments').textContent = weekAppointments;
+            document.getElementById('revenue').textContent = `$${revenue}`;
+            document.getElementById('totalAppointments').textContent = totalAppointments;
+        }
+        
+        function updateDashboardSchedule() {
+            if (!currentUser) return;
+            
+            const scheduleView = document.getElementById('dashboardSchedule');
+            const teamAppointments = appointments.filter(apt => 
+                apt.teamMember === currentUser.id && apt.status !== 'cancelled'
+            );
+            
+            // Generate next 7 days
+            let scheduleHTML = '';
+            for (let i = 0; i < 7; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() + i);
+                const dateStr = date.toISOString().split('T')[0];
+                const formattedDate = date.toLocaleDateString('en-US', {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric'
+                });
+                const dayAppointments = teamAppointments.filter(apt => apt.date === dateStr);
+                
+                // Sort appointments by time
+                dayAppointments.sort((a, b) => {
+                    const timeA = convertTimeToMinutes(a.time);
+                    const timeB = convertTimeToMinutes(b.time);
+                    return timeA - timeB;
+                });
+                
+                scheduleHTML += `
+                    <div class="schedule-day-card">
+                        <div class="schedule-day-header">
+                            <div class="schedule-day-title">${formattedDate}</div>
+                            <button class="add-appointment-btn-small" onclick="openAddAppointmentModal('${dateStr}')">+</button>
+                        </div>
+                `;
+                
+                if (dayAppointments.length > 0) {
+                    dayAppointments.forEach(apt => {
+                        const appointmentDate = new Date(apt.date + ' ' + apt.time);
+                        const formattedTime = appointmentDate.toLocaleTimeString('en-US', {
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            hour12: true
+                        });
+                        
+                        scheduleHTML += `
+                            <div class="appointment-list-item">
+                                <div class="appointment-time">${formattedTime}</div>
+                                <div class="appointment-customer">${apt.name}</div>
+                                <div>$${apt.price}</div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    scheduleHTML += `<p style="text-align: center; color: #666; font-style: italic; padding: 10px 0;">No appointments</p>`;
+                }
+                
+                scheduleHTML += `</div>`;
+            }
+            
+            scheduleView.innerHTML = scheduleHTML;
+        }
+        
+        function displayTeamAppointments() {
+            if (!currentUser) return;
+            
+            const appointmentsList = document.getElementById('teamAppointmentsList');
+            const teamAppointments = appointments.filter(apt => 
+                apt.teamMember === currentUser.id && apt.status !== 'cancelled'
+            );
+            
+            if (teamAppointments.length === 0) {
+                appointmentsList.innerHTML = '<p style="text-align: center; color: #666; font-style: italic;">No appointments scheduled.</p>';
+                return;
+            }
+            
+            // Group appointments by date
+            const appointmentsByDate = {};
+            teamAppointments.forEach(apt => {
+                if (!appointmentsByDate[apt.date]) {
+                    appointmentsByDate[apt.date] = [];
+                }
+                appointmentsByDate[apt.date].push(apt);
+            });
+            
+            // Sort dates
+            const sortedDates = Object.keys(appointmentsByDate).sort();
+            
+            // For each date, sort appointments by time
+            sortedDates.forEach(date => {
+                appointmentsByDate[date].sort((a, b) => {
+                    const timeA = convertTimeToMinutes(a.time);
+                    const timeB = convertTimeToMinutes(b.time);
+                    return timeA - timeB;
+                });
+            });
+            
+            // Generate HTML
+            let appointmentsHTML = '';
+            sortedDates.forEach(date => {
+                const dateObj = new Date(date);
+                const formattedDate = dateObj.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                appointmentsHTML += `
+                    <div class="day-group">
+                        <div class="day-header">
+                            <div class="day-title"><i class="fas fa-calendar-day"></i> ${formattedDate}</div>
+                            <button class="add-appointment-btn" onclick="openAddAppointmentModal('${date}')">+</button>
+                        </div>
+                `;
+                
+                appointmentsByDate[date].forEach(apt => {
+                    const appointmentDate = new Date(apt.date + ' ' + apt.time);
+                    const formattedTime = appointmentDate.toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true
+                    });
+                    
+                    appointmentsHTML += `
+                        <div class="appointment-time-item">
+                            <div class="time-display">${formattedTime}</div>
+                            <div class="customer-name">${apt.name}</div>
+                            <div class="appointment-price">$${apt.price}</div>
+                            <div class="appointment-actions-mini">
+                                ${apt.status === 'confirmed' ?
+                                    `<button class="action-btn complete-btn" onclick="completeAppointment(${apt.id})"><i class="fas fa-check"></i></button>` : ''}
+                                <button class="action-btn cancel-btn-mini" onclick="cancelAppointment(${apt.id})"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                appointmentsHTML += `</div>`;
+            });
+            
+            appointmentsList.innerHTML = appointmentsHTML;
+        }
+        
+        function convertTimeToMinutes(timeStr) {
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            return hours * 60 + minutes;
+        }
+        
+        function openAddAppointmentModal(date) {
+            if (!currentUser) return;
+            
+            document.getElementById('appointmentDateForModal').value = date;
+            
+            // Set the date in the modal title
+            const dateObj = new Date(date);
+            const formattedDate = dateObj.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.querySelector('.modal-header h3').textContent = `Add Appointment for ${formattedDate}`;
+            
+            // Get team member
+            const member = teamMembers[currentUser.id];
+            if (!member) return;
+            
+            // Generate time slots (every 30 minutes from 9am to 6pm)
+            const startHour = 9;
+            const endHour = 18;
+            const slots = [];
+            for (let hour = startHour; hour < endHour; hour++) {
+                for (let minute = 0; minute < 60; minute += 30) {
+                    const hourStr = hour.toString().padStart(2, '0');
+                    const minStr = minute.toString().padStart(2, '0');
+                    slots.push(`${hourStr}:${minStr}`);
+                }
+            }
+            
+            // Check for conflicts with existing appointments
+            const dateAppointments = appointments.filter(apt => 
+                apt.date === date && apt.teamMember === currentUser.id && apt.status !== 'cancelled'
+            );
+            
+            // Populate time slots dropdown
+            const timeSelect = document.getElementById('appointmentTimeModal');
+            timeSelect.innerHTML = '';
+            slots.forEach(time => {
+                // Check if this slot is taken
+                const isTaken = dateAppointments.some(apt => apt.time === time);
+                if (!isTaken) {
+                    const [hours, minutes] = time.split(':');
+                    const hour = parseInt(hours);
+                    const period = hour >= 12 ? 'PM' : 'AM';
+                    const displayHour = hour % 12 || 12;
+                    const displayTime = `${displayHour}:${minutes} ${period}`;
+                    
+                    const option = document.createElement('option');
+                    option.value = time;
+                    option.textContent = displayTime;
+                    timeSelect.appendChild(option);
+                }
+            });
+            
+            if (timeSelect.options.length === 0) {
+                timeSelect.innerHTML = '<option value="">No available time slots</option>';
+            }
+            
+            // Populate services dropdown
+            const serviceDropdown = document.getElementById('serviceSelectionModal');
+            serviceDropdown.innerHTML = '<option value="">Select a service</option>';
+            
+            // Get services for this team member
+            const memberServices = services.filter(service => member.services.includes(service.id));
+            
+            // Add services to dropdown
+            memberServices.forEach(service => {
+                const option = document.createElement('option');
+                option.value = service.id;
+                option.textContent = service.name;
+                serviceDropdown.appendChild(option);
+            });
+            
+            // Reset recurring options
+            document.getElementById('recurringOptions').classList.remove('expanded');
+            document.getElementById('recurringChevronModal').className = 'fas fa-chevron-down';
+            document.getElementById('recurrenceType').value = '';
+            document.getElementById('occurrences').value = '1';
+            document.getElementById('foreverRecurrence').checked = false;
+            document.getElementById('occurrences').disabled = false;
+            
+            // Show the modal
+            document.getElementById('addAppointmentModal').style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('addAppointmentModal').style.display = 'none';
+            document.getElementById('addAppointmentForm').reset();
+        }
+        
+        function handleAddAppointment(e) {
+            e.preventDefault();
+            if (!currentUser) return;
+            
+            const customerName = document.getElementById('customerName').value;
+            const customerEmail = document.getElementById('customerEmail').value;
+            const time = document.getElementById('appointmentTimeModal').value;
+            const serviceId = parseInt(document.getElementById('serviceSelectionModal').value);
+            const notes = document.getElementById('notesModal').value;
+            const date = document.getElementById('appointmentDateForModal').value;
+            const recurrenceType = document.getElementById('recurrenceType').value;
+            const occurrencesInput = document.getElementById('occurrences');
+            const foreverCheckbox = document.getElementById('foreverRecurrence').checked;
+            const occurrences = foreverCheckbox ? 1000 : parseInt(occurrencesInput.value);
+            
+            if (!serviceId) {
+                showError('servicesError', 'Please select a service.');
+                return;
+            }
+            
+            const service = services.find(s => s.id === serviceId);
+            if (!service) return;
+            
+            const newAppointments = [];
+            for (let i = 0; i < occurrences; i++) {
+                const appointmentDate = new Date(date);
+                // Calculate next date based on recurrence
+                if (i > 0) {
+                    switch (recurrenceType) {
+                        case 'daily':
+                            appointmentDate.setDate(appointmentDate.getDate() + i);
+                            break;
+                        case 'weekly':
+                            appointmentDate.setDate(appointmentDate.getDate() + (i * 7));
+                            break;
+                        case 'biweekly':
+                            appointmentDate.setDate(appointmentDate.getDate() + (i * 14));
+                            break;
+                        default:
+                            // No recurrence, only one appointment
+                            if (i > 0) break;
+                    }
+                }
+                
+                const dateStr = appointmentDate.toISOString().split('T')[0];
+                const recurringAppointment = {
+                    id: Date.now() + i,
+                    name: customerName,
+                    email: customerEmail,
+                    teamMember: currentUser.id,
+                    teamMemberName: currentUser.name,
+                    location: currentUser.location,
+                    date: dateStr,
+                    time: time,
+                    serviceId: serviceId,
+                    serviceName: service.name,
+                    price: service.price,
+                    notes: notes,
+                    status: 'confirmed',
+                    createdAt: new Date().toISOString()
+                };
+                newAppointments.push(recurringAppointment);
+            }
+            
+            // Add to appointments array
+            appointments = [...appointments, ...newAppointments];
+            
+            // Save to localStorage
+            saveToLocalStorage();
+            
+            // Close modal
+            closeModal();
+            
+            // Update views
+            displayTeamAppointments();
+            updateDashboardStats();
+            updateDashboardSchedule();
+            showSuccess('servicesSuccess', `${newAppointments.length} appointment(s) added successfully!`);
+        }
+        
+        function populateTeamMembersList() {
+            const teamList = document.getElementById('teamMembersList');
+            if (!teamList) return;
+            
+            teamList.innerHTML = '';
+            Object.values(teamMembers).forEach(member => {
+                const memberDiv = document.createElement('div');
+                memberDiv.className = 'service-item';
+                memberDiv.innerHTML = `
+                    <div class="service-info">
+                        <div class="service-name">${member.name}</div>
+                        <div class="service-price">${member.title}</div>
+                    </div>
+                    <div>
+                        <button class="edit-team-btn" onclick="openEditTeamMemberModal('${member.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete-team-btn" onclick="deleteTeamMember('${member.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                teamList.appendChild(memberDiv);
+            });
+        }
+    </script>
+</body>
+</html>
